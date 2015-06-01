@@ -1,0 +1,17 @@
+{
+	"name": "ftpsync",
+	"version": "0.0.1",
+	"description": "A module to sync server files with local files",
+	"author": "Guilherme Nemeth <guilherme.nemeth@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/glhrmfrts/ftpsync"
+	},
+	"scripts": {
+		"main": "index.js",
+		"worker": "worker.js"
+	},
+	"dependencies": {
+		"ftp": "*"
+	}
+}
