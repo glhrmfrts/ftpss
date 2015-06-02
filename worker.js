@@ -68,7 +68,7 @@ Worker.prototype.handleError = function(code, currentInfo, currentFile, callback
 			}
 		})
 	} else {
-		console.log(err)
+		console.log(code)
 	}
 }
 
