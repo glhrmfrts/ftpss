@@ -1,6 +1,7 @@
 var fs = require('fs')
 var path = require('path')
-var format = require('string-kit').format
+var format = require('util').format
+var colors = require('colors')
 var Client = require('ftp')
 
 // this class does all the "work"
@@ -78,19 +79,24 @@ Worker.prototype.put = function(info, filename) {
 		if (err) {
 			self.handleError(err.code, info, filename, self.put.bind(self))
 		} else {
-			self.notifyPutEvent(info, filename)
+			self.logPutEvent(info, filename)
 		}
 	})
 }
 
 // prints to stdout the "put" event
-Worker.prototype.notifyPutEvent = function(info, filename) {
-	console.log(format('%s  |  %s', filename, this.config.host))
+Worker.prototype.logPutEvent = function(info, filename) {
+	console.log(format('[%s] %s | %s', this.getTime(), filename.green, this.config.host))
 }
 
 // check if the directory or file should be ignored
 Worker.prototype.shouldIgnore = function(name) {
 	return this.options.ignore.indexOf(name) >= 0
+}
+
+Worker.prototype.getTime = function() {
+	var date = new Date()
+	return format('%s:%s:%s', date.getHours(), date.getMinutes(), date.getSeconds()).gray
 }
 
 // get useful info about a given directory

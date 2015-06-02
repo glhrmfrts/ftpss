@@ -17,8 +17,8 @@ module.exports = function(options, config) {
 	options = JSON.stringify(options || defaultOptions)
 	config = JSON.stringify(config)
 
-	var process = child_process.fork(path.join(__dirname, 'worker'), [options, config])
+	var worker = child_process.fork(path.join(__dirname, 'worker'), [options, config])
 	
 	// this is temp
-	return process
+	return worker
 }
