@@ -1,5 +1,5 @@
 {
-	"name": "ftpsync",
+	"name": "ftpss",
 	"version": "0.0.1",
 	"description": "A module to sync server files with local files",
 	"author": "Guilherme Nemeth <guilherme.nemeth@gmail.com>",
