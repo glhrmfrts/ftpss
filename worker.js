@@ -1,5 +1,6 @@
 var fs = require('fs')
 var path = require('path')
+var format = require('string-kit').format
 var Client = require('ftp')
 
 // this class does all the "work"
@@ -31,7 +32,7 @@ Worker.prototype.readDir = function(dirName) {
 		files.forEach(function(file) {
 			var abspath = dirName + '\\'+ file
 			var fileStat = fs.statSync(abspath)
-			if (fileStat.isDirectory() && self.options.ignore.indexOf(file) < 0) {
+			if (fileStat.isDirectory() && !self.shouldIgnore(file)) {
 				self.readDir(abspath)
 			}
 		})
@@ -42,7 +43,7 @@ Worker.prototype.readDir = function(dirName) {
 Worker.prototype.watch = function(dir) {
 	var info = this.getInfo(dir), self = this
 	fs.watch(dir, function(evnt, filename) {
-		if (evnt === 'change') {
+		if (evnt === 'change' && !self.shouldIgnore(filename)) {
 			self.client.cwd(info.remote, function(err) {
 				if (err) {
 					self.handleError(err.code, info, filename, self.put.bind(self))
@@ -84,12 +85,12 @@ Worker.prototype.put = function(info, filename) {
 
 // prints to stdout the "put" event
 Worker.prototype.notifyPutEvent = function(info, filename) {
-	var self = this
-	var output = ''
-	output += filename
-	output += "  |  "
-	output += this.config.host
-	console.log(output) 
+	console.log(format('%s  |  %s', filename, this.config.host))
+}
+
+// check if the directory or file should be ignored
+Worker.prototype.shouldIgnore = function(name) {
+	return this.options.ignore.indexOf(name) >= 0
 }
 
 // get useful info about a given directory

@@ -1,8 +1,9 @@
 {
 	"name": "ftpss",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"description": "A module to sync server files with local files",
 	"author": "Guilherme Nemeth <guilherme.nemeth@gmail.com>",
+	"main": "index.js",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/glhrmfrts/ftpsync"
@@ -12,6 +13,7 @@
 		"worker": "worker.js"
 	},
 	"dependencies": {
-		"ftp": "*"
+		"ftp": "*",
+		"string-kit": "*"
 	}
 }
