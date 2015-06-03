@@ -4,7 +4,7 @@ var format = require('util').format
 var colors = require('colors')
 var Client = require('ftp')
 
-// this class does all the "work"
+// This class does all the "work"
 function Worker(options, config) {
 	this.options = JSON.parse(options)
 	this.config = JSON.parse(config)
@@ -13,7 +13,7 @@ function Worker(options, config) {
 	this.client = new Client()
 }
 
-// main method, connects to the server and start the all the works
+// Main method, connects to the server and start watching files
 Worker.prototype.run = function() {
 	var self = this
 	self.client.on('ready', function() {
@@ -22,7 +22,7 @@ Worker.prototype.run = function() {
 	self.client.connect(self.config)
 }
  
-// read the root directory recursively
+// Read the root directory recursively
 Worker.prototype.readDir = function(dirName) {
 	var self = this
 	self.watch(dirName)
@@ -56,7 +56,7 @@ Worker.prototype.watch = function(dir) {
 	})
 }
 
-// Handles any errors 
+// Handles all errors 
 Worker.prototype.handleError = function(code, currentInfo, currentFile, callback) {
 	var self = this
 	if (code === 550) {
@@ -68,6 +68,8 @@ Worker.prototype.handleError = function(code, currentInfo, currentFile, callback
 			}
 		})
 	} else {
+
+		// TODO: handle more kind of errors
 		console.log(code)
 	}
 }
@@ -84,22 +86,23 @@ Worker.prototype.put = function(info, filename) {
 	})
 }
 
-// prints to stdout the "put" event
+// Prints to stdout the "put" event
 Worker.prototype.logPutEvent = function(info, filename) {
-	console.log(format('[%s] %s | %s', this.getTime(), filename.green, this.config.host))
+	console.log(format('[%s] %s | %s', this.getTime().gray, filename.green, this.config.host))
 }
 
-// check if the directory or file should be ignored
+// Check if the directory or file should be ignored
 Worker.prototype.shouldIgnore = function(name) {
 	return this.options.ignore.indexOf(name) >= 0
 }
 
+// Get the formated current time
 Worker.prototype.getTime = function() {
 	var date = new Date()
-	return format('%s:%s:%s', date.getHours(), date.getMinutes(), date.getSeconds()).gray
+	return format('%s:%s:%s', date.getHours(), date.getMinutes(), date.getSeconds())
 }
 
-// get useful info about a given directory
+// Get useful info about a given directory
 Worker.prototype.getInfo = function(dir) {
 	var offset = dir.replace(this.options.local, '')
 	return {
@@ -109,12 +112,12 @@ Worker.prototype.getInfo = function(dir) {
 	}
 }
 
-// get the local absolute path
+// Get the local absolute path
 Worker.prototype.getLocalPath = function(path) {
 	return this.options.local + '\\'+ path
 }
 
-// get the remote absolute path
+// Get the remote absolute path
 Worker.prototype.getRemotePath = function(path) {
 	return this.options.remote + path.replace(/\\/g, '/')
 }
