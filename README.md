@@ -9,36 +9,44 @@ Simply
 `npm install ftpss`
 
 ## Using
-Just
+The main method looks like this:
+
+`ftpss(options, config)`
+
+Where `options` is an object containing the following properties:
+
+- **local (String)**: Local path to a project
+- **remote (String)**: Remote path (on the server) to a project
+- **ignore (Array)**: List of files and folders to ignore
+
+And `config` is also an object that contains:
+
+- **host (String)**: The host domain of the server
+- **user (String)**: Username for login
+- **password (String)**: Password for login
+- **port (Integer)**: (Optional) port to connect to the server, default is 21
+
+A complete example looks like this:
 
 ```js
 var ftpss = require('ftpss')
 
 var options = {
-  
-  // local path to the project
   local: 'C:\\local\\path',
-  
-  // remote path to the project
   remote: '/www/remote/path',
-  
-  // list of files and folders to ignore
   ignore: ['node_modules', 'etc']
 }
 
 var config = {
-
-  // the host domain
   host: 'ftp.host.com.br',
-  
-  // user for login
   user: '****',
-  
-  // password for login
-  password: '****' 
+  password: '****',
+  port: 21
 }
 
 ftpss(options, config)
 ```
+
+Since the call to `ftpss(options, config)` is non-blocking, it's possible to watch multiple projects/directories. Just be kind to your CPU and memory.
 
 That's it, Danke.
